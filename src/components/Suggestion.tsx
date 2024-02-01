@@ -1,27 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from 'next/dynamic'
-
+import getVideoSuggestionDocument from "./Database";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
-
-const videos = [
-    {
-        title: "Video 1",
-        url: "https://youtu.be/0na2VPn-TIw?feature=shared",
-    },
-    {
-        title: "Video 2",
-        url: "https://youtu.be/ThIvYuCFDoQ?feature=shared",
-    },
-];
-
 export default function Suggestion() {
+    const [suggestedVideos, setSuggestedVideos] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const id = "1"; // replace with the actual document ID
+                const data = await getVideoSuggestionDocument(id);
+
+                if (data.result.exists()) {
+                    const documentData = data.result.data();
+
+                    // Ensure documentData has 'title' and 'url' properties
+                    if (documentData && documentData.title && documentData.url) {
+                        // Convert the object into an array by pushing it
+                        setSuggestedVideos([documentData]);
+                    } else {
+                        console.error("Invalid data structure in document");
+                    }
+                } else {
+                    console.log("Document not found");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <div>
             <h2>Suggested Videos</h2>
             <ul>
-                {videos.map((video, index) => (
+                {suggestedVideos.map((video, index) => (
                     <li key={index}>
                         <h3>{video.title}</h3>
                         <div>
@@ -32,11 +49,9 @@ export default function Suggestion() {
                                 controls={true}
                             />
                         </div>
-
                     </li>
                 ))}
             </ul>
         </div>
     );
 };
-
