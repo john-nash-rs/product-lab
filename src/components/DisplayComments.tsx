@@ -9,12 +9,13 @@ const commentsList = [
 
 export default function DisplayComments() {
   return (
-    <div>
-      <h2>Comments</h2>
-      {commentsList.map((comment, index) => (
-        <Comment key={index} name={comment.name} comment={comment.comment} />
-      ))}
+    <div className="mt-8">
+      <h2 className="text-2xl font-bold mb-4 text-white">Comments</h2>
+      <div className="space-y-4">
+        {commentsList.map((comment, index) => (
+          <Comment key={index} name={comment.name} comment={comment.comment} />
+        ))}
+      </div>
     </div>
   );
 };
-

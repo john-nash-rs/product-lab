@@ -1,15 +1,12 @@
-// components/Comment.js
 import React from 'react';
 
-export default function Comment  (props: any)  {
-  const {name, comment} = props; 
+export default function Comment(props) {
+  const { name, comment } = props;
   return (
-    <div>
-      <strong>{name}</strong>
-      <p>{comment}</p>
-      <hr />
+    <div className="bg-gray-800 text-white p-4 rounded-lg shadow-md mb-4">
+      <strong className="block font-semibold">{name}</strong>
+      <p className="text-sm">{comment}</p>
+      <hr className="my-2 border-gray-700" />
     </div>
   );
 };
-
-
